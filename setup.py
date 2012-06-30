@@ -4,8 +4,8 @@ import py2exe, os, sys
 sys.argv.append('py2exe')
 
 setup(
-	console=['twitch2.py'],
-	data_files=[('', ['settings.json'])],
+	console=['./src/TwitchTV_VOD_Catchup.py'],
+	data_files=[('', ['./conf/settings.json'])],
 	zipfile = None,
 	options = {'py2exe': {'bundle_files': 1}},
 	)
