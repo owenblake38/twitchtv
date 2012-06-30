@@ -15,6 +15,7 @@ def main():
     check_and_create_database()
 
     print "Starting checking for shows to download"
+    #Loop through all the channels defined
     for channel in config["shows"].keys():
         print channel + ":"
         url = "http://api.justin.tv/api/channel/archives/%s.xml?limit=%s" % (channel, config["results_count"])
@@ -27,14 +28,23 @@ def main():
                 show_id = tree_node.find("id").text
                 broadcast_part = tree_node.find("broadcast_part").text
                 video_file = tree_node.find("video_file_url").text
-
+                #Loop through all the show titles defind and see if any of them match
+                count = 0
                 for show_title in config["shows"][channel]:
-                    if show_title.lower() in title.lower():
-                        if check_downloaded(tree_node.find("id").text) == False:
+                    if show_title.lower() in title.lower() or show_title == '*':
+                        #Check to see if it has been downloaded already
+                        if check_downloaded(show_id) == False:
+                            #If not download it
                             dlfile(video_file, title, broadcast_part, show_id, channel)
+                            count = count + 1
 
             except Exception, e:
                 print e
+
+        if count == 0:
+            print 'No Shows to Download'
+        else:
+            print '%s Shows Downloaded' % (count)
 
 
 def dlfile(url, title, part, show_id, channel):
@@ -46,8 +56,9 @@ def dlfile(url, title, part, show_id, channel):
     meta = u.info()
     file_size = int(meta.getheaders("Content-Length")[0])
 
+    #Generate a more user friendly filename for the file
     new_name = "%s pt%s-%s.%s" % (title, part, show_id, extension)
-    new_name = remove(new_name)
+    new_name = sanitize_filename(new_name)
 
     print "Downloading: (%s) %s Bytes: %s" % (new_name, file_name, file_size)
 
@@ -65,7 +76,6 @@ def dlfile(url, title, part, show_id, channel):
 
     f.close()
 
-    print new_name
     #Check the the destination folder(channel name) exists
     check_and_create_folder(channel)
     #Rename to file to a more friendly filename
@@ -78,14 +88,15 @@ def dlfile(url, title, part, show_id, channel):
 
 def check_downloaded(video_id):
     connection = sqlite3.connect(config["database"])
-    c = connection.cursor()
-    c.execute("SELECT COUNT(*) FROM downloads WHERE id = ?", [video_id])
-    
-    count = c.fetchone()
-    if count[0] > 0:
-        return True
-    else:
-        return False
+    with connection:
+        c = connection.cursor()
+        c.execute("SELECT COUNT(*) FROM downloads WHERE id = ?", [video_id])
+
+        count = c.fetchone()
+        if count[0] > 0:
+            return True
+        else:
+            return False
 
 
 def add_downloaded(show_id, video_name):
@@ -111,7 +122,7 @@ def check_and_create_folder(folder_name):
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
 
-def remove(value):
+def sanitize_filename(value):
     for c in "\\/:*?\"<>|":
         value = value.replace(c, '')
     return value
