@@ -1,0 +1,9 @@
+{
+	"shows" : {	"onemoregametv":["Inside The Game", "Live On Three"],
+				"complexity":	["The Executives"],
+				"thegdstudio":	["The GD Show"]
+	},
+
+	"database" : "downloaded_shows.db",
+	"results_count" : 10
+}
