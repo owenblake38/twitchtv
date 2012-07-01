@@ -5,6 +5,7 @@ import sqlite3
 import os
 import shutil
 import json
+from pynma import pynma
 
 config = {}
 
@@ -84,7 +85,7 @@ def dlfile(url, title, part, show_id, channel):
     #move the file to the channel name directory
     shutil.move(new_name, "./" + channel)
     #Add the downloaded show to the database
-    add_downloaded(show_id, new_name)
+    add_downloaded(show_id, new_name, channel)
 
 
 def check_downloaded(video_id):
@@ -100,11 +101,11 @@ def check_downloaded(video_id):
             return False
 
 
-def add_downloaded(show_id, video_name):
+def add_downloaded(show_id, video_name, channel):
     connection = sqlite3.connect(config["database"])
     with connection:
         c = connection.cursor()
-        c.execute("INSERT INTO downloads VALUES (?,?)", [show_id, video_name])
+        c.execute("INSERT INTO downloads VALUES (?,?,?,DATE('now'))", [show_id, video_name, channel])
 
 
 def check_and_create_database():
@@ -117,7 +118,7 @@ def check_and_create_database():
         connection = sqlite3.connect(config["database"])
         with connection:
             c = connection.cursor()
-            c.execute("CREATE TABLE downloads(id INT, name TEXT)")
+            c.execute("CREATE TABLE downloads(id INT, name TEXT, channel TEXT, time TIMESTAMP)")
 
 def check_and_create_folder(folder_name):
     if not os.path.exists(folder_name):
