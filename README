@@ -30,3 +30,7 @@ file to suit your tastes and running the application.
 
 If you have a python installation and wish to check out the source code then before running copy and modify the settings.json
 file in the conf directory into the bin directory and execute the program via $ python TwitchTV_VOD_Catchup.py 
+
+4. Notes
+ - VOD's on Twitch.TV are limited to two hours in length.  As a result if the VOD is over two hours in length two (or more)
+files will be downloaded and their part numbers appended to the filename so you can differentiate the file parts
