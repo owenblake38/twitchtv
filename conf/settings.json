@@ -1,29 +1,11 @@
 {
-	/*
-	* This section defines which shows from which channels you want to download.
-	* They must be entered in the following format ("CHANNEL_NAME" : ["SHOW_NAME"], ["SHOW_NAME"]) a trailing comma must be present on all but
-	* the last line.
-	* Show names will match on any substrings so "Inside" will match on "Inside the Game" and the matching is case insensitive
-	* e.g.
-	*
-	* "shows" : {	"onemoregametv":["Inside The Game", "Live On Three"], (Will download all VOD's titles Inside the Game and Live on Three
-	*																		on the channel onemoregametv)
-	*				"complexity":	["The Executives"],	(Will download all VOD's titled The Executives on the channel conplexity)
-	*				"thegdstudio":	["*"] (WIll download all VOD's on the channel thegdstudio)
-	*/
+
 	"shows" : {	"onemoregametv":["Inside The Game", "Live On Three"],
 				"complexity":	["The Executives"],
 				"thegdstudio":	["*"]
 	},
-	/*
-	* Defines the name of the database that stores the list of the shows that have already been downloaded so when the program is run
-	* twice it doesnt download the same episodes again.
-	*/
+
 	"database" : "downloaded_shows.db",
 
-	/*
-	* Defines how many previous VOD's per channel when querying Twitch.TV.  Use a higher value when you want VOD's that are further in the past.
-	* NOTE: any numbery above 50 will be ignored due to a limitation with the Twitch.TV API
-	*/
 	"results_count" : 10
 }
