@@ -1,5 +1,4 @@
 #!/usr/bin/python -O
-
 from xml.etree import ElementTree as etree
 import urllib2
 import sqlite3
