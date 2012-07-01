@@ -11,10 +11,17 @@ downloaded VOD's will be in FLV format which can be played by a variety of diffe
 Configuration is managed by a JSON format file.  At present it contains the following parameters:
 
 shows -
-The shows parameter defines which VOD's on which channels you want to download.  The variable is a Dictionary with the 
-show name as the key and a list of strings containing the VOD titles that you want to download as the value.  The titles 
-are case insensitive and can be substrings of the full VOD title.  Additionally the * character can be entered if you 
-wish to download all VOD's present of the channel without specifying their names.
+
+This section defines which shows from which channels you want to download.
+They must be entered in the following format ("CHANNEL_NAME" : ["SHOW_NAME"], ["SHOW_NAME"]) a trailing comma must be present on all but
+the last line.
+Show names will match on any substrings so "Inside" will match on "Inside the Game" and the matching is case insensitive
+e.g.
+"shows" : {   "onemoregametv":["Inside The Game", "Live On Three"], (Will download all VOD's titles Inside the Game and Live on Three
+                                                                    on the channel onemoregametv)
+                              "complexity":   ["The Executives"],     (Will download all VOD's titled The Executives on the channel complexity)
+                              "thegdstudio":  ["*"] (Will download all VOD's on the channel thegdstudio)
+}
 
 database - 
 Defines the name of the database that stores the list of the shows that have already been downloaded so when the program is run
@@ -33,4 +40,4 @@ file in the conf directory into the bin directory and execute the program via $ 
 
 4. Notes
  - VOD's on Twitch.TV are limited to two hours in length.  As a result if the VOD is over two hours in length two (or more)
-files will be downloaded and their part numbers appended to the filename so you can differentiate the file parts
+files will be downloaded and their part numbers appended to the filename so you can differentiate the file parts.
