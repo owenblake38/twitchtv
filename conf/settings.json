@@ -4,10 +4,16 @@
 	* They must be entered in the following format ("CHANNEL_NAME" : ["SHOW_NAME"], ["SHOW_NAME"]) a trailing comma must be present on all but
 	* the last line.
 	* Show names will match on any substrings so "Inside" will match on "Inside the Game" and the matching is case insensitive
+	* e.g.
+	*
+	* "shows" : {	"onemoregametv":["Inside The Game", "Live On Three"], (Will download all VOD's titles Inside the Game and Live on Three
+	*																		on the channel onemoregametv)
+	*				"complexity":	["The Executives"],	(Will download all VOD's titled The Executives on the channel conplexity)
+	*				"thegdstudio":	["*"] (WIll download all VOD's on the channel thegdstudio)
 	*/
 	"shows" : {	"onemoregametv":["Inside The Game", "Live On Three"],
 				"complexity":	["The Executives"],
-				"thegdstudio":	["The GD Show"]
+				"thegdstudio":	["*"]
 	},
 	/*
 	* Defines the name of the database that stores the list of the shows that have already been downloaded so when the program is run

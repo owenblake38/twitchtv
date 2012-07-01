@@ -1,0 +1,32 @@
+
+1. Introduction
+
+Twitch.TV VOD Catchup is a Python script that automatically downloads the latest VOD's of you favorite channels.  Simply
+define which channels you VOD titles you wish to download on a regular basis in the configuration file and run the application.
+This will download all VOD's that match your search criteria and place them in separate folders for each channel.  The
+downloaded VOD's will be in FLV format which can be played by a variety of different applications including VLC.
+
+2. Configuration
+
+Configuration is managed by a JSON format file.  At present it contains the following parameters:
+
+shows -
+The shows parameter defines which VOD's on which channels you want to download.  The variable is a Dictionary with the 
+show name as the key and a list of strings containing the VOD titles that you want to download as the value.  The titles 
+are case insensitive and can be substrings of the full VOD title.  Additionally the * character can be entered if you 
+wish to download all VOD's present of the channel without specifying their names.
+
+database - 
+Defines the name of the database that stores the list of the shows that have already been downloaded so when the program is run
+twice it doesn't download the same episodes again.
+
+results_count - 
+Defines how many previous VOD's per channel when querying Twitch.TV.  Use a higher value when you want VOD's that are further in the past.
+NOTE: any number above 50 will be ignored due to a limitation with the Twitch.TV API
+
+3. How to Run the Application
+If you have downloaded a Windows executable version of the application then it should be as simple as editing the configuration
+file to suit your tastes and running the application.
+
+If you have a python installation and wish to check out the source code then before running copy and modify the settings.json
+file in the conf directory into the bin directory and execute the program via $ python TwitchTV_VOD_Catchup.py 
