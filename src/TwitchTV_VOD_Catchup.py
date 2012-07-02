@@ -20,6 +20,7 @@ def main():
     #Loop through all the channels defined
     for channel in config["shows"].keys():
         print channel + ":"
+        count = 0
         url = "http://api.justin.tv/api/channel/archives/%s.xml?limit=%s" % (channel, config["results_count"])
         response = urllib2.urlopen(url)
         html = response.read()
@@ -31,7 +32,6 @@ def main():
                 broadcast_part = tree_node.find("broadcast_part").text
                 video_file = tree_node.find("video_file_url").text
                 #Loop through all the show titles defind and see if any of them match
-                count = 0
                 for show_title in config["shows"][channel]:
                     if show_title.lower() in title.lower() or show_title == '*':
                         #Check to see if it has been downloaded already
@@ -86,6 +86,9 @@ def dlfile(url, title, part, show_id, channel):
     shutil.move(new_name, "./" + channel)
     #Add the downloaded show to the database
     add_downloaded(show_id, new_name, channel)
+    #If a PyNMA hey has been supplied nofify it
+    if not config["pynma_key"]:
+        notify_pynma(channel, new_name)
 
 
 def check_downloaded(video_id):
@@ -128,5 +131,10 @@ def sanitize_filename(value):
     for c in "\\/:*?\"<>|":
         value = value.replace(c, '')
     return value
+
+def notify_pynma(channel, video_name):
+    p = pynma.PyNMA(config["pynma_key"])
+    p.push(application="TwitchTV VOD Catchup", event="A new VOD from %s has been downloaded" % (channel), description="VOD %s has been downloaded" % (video_name))
+
 
 main()

@@ -7,5 +7,7 @@
 
 	"database" : "downloaded_shows.db",
 
-	"results_count" : 10
+	"results_count" : 10,
+
+	"pynma_key" : ""
 }
