@@ -87,7 +87,7 @@ def dlfile(url, title, part, show_id, channel):
     #Add the downloaded show to the database
     add_downloaded(show_id, new_name, channel)
     #If a PyNMA hey has been supplied nofify it
-    if not config["pynma_key"]:
+    if len(config["pynma_key"]) != 0:
         notify_pynma(channel, new_name)
 
 
@@ -133,8 +133,10 @@ def sanitize_filename(value):
     return value
 
 def notify_pynma(channel, video_name):
-    p = pynma.PyNMA(config["pynma_key"])
-    p.push(application="TwitchTV VOD Catchup", event="A new VOD from %s has been downloaded" % (channel), description="VOD %s has been downloaded" % (video_name))
-
+    api_key = config["pynma_key"]
+    #Workaround for the fact PyNMA doesnt support unicode API Keys
+    api_key = api_key.encode('ascii','ignore')
+    p = pynma.PyNMA(api_key)
+    result = p.push("TwitchTV VOD Catchup", "A new VOD from %s has been downloaded" % (channel), "VOD %s has been downloaded" % (video_name))
 
 main()
