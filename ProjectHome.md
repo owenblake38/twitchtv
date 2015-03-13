@@ -1,0 +1,1 @@
+A Python script that automatically downloads your favourite Shows from your favourite channels on Twitch.tv
